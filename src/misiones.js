@@ -30,4 +30,15 @@ export function totalPedido(pedido) {
   const total = subtotal * (1 - descuento);
   return Math.round(total * 100) / 100;
 }
+// ----------------------------------------------------------------------------
+// MISIÓN 2 · RF4 — ¿Este cambio de estado es válido?
+// ----------------------------------------------------------------------------
+export function puedeTransicionar(actual, nuevo) {
+  const iActual = ESTADOS.indexOf(actual);
+  const iNuevo = ESTADOS.indexOf(nuevo);
+  
+  // Debe existir en el arreglo y ser exactamente el siguiente (índice + 1)
+  return iActual !== -1 && iNuevo !== -1 && iNuevo === iActual + 1;
+}
+
 
