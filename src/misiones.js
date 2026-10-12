@@ -97,51 +97,18 @@ export function buscarPedidos(pedidos, texto) {
   
   const resultado = [];
   for (let i = 0; i < pedidos.length; i++) {
-    const nombre = (pedidos[i].cliente && pedidos[i].cliente.nombre ? pedidos[i].cliente.nombre : '')
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .toLowerCase();
+    const pedido = pedidos[i];
+    // Soporta tanto si cliente es string como si es un objeto { nombre }
+    const nombre = typeof pedido.cliente === 'string' 
+      ? pedido.cliente 
+      : (pedido.cliente && pedido.cliente.nombre ? pedido.cliente.nombre : '');
       
-    if (nombre.includes(busqueda)) {
-      resultado.push(pedidos[i]);
+    const nombreLimpio = nombre.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+      
+    if (nombreLimpio.includes(busqueda)) {
+      resultado.push(pedido);
     }
   }
   
   return resultado;
-}
-// ----------------------------------------------------------------------------
-// MISIÓN 6 · DESTACADO — Los mejores clientes
-// ----------------------------------------------------------------------------
-
-export function topClientes(pedidos, n) {
-  if (!Array.isArray(pedidos)) return [];
-  
-  const acumulado = {};
-  
-  for (let i = 0; i < pedidos.length; i++) {
-    const nombre = pedidos[i].cliente && pedidos[i].cliente.nombre ? pedidos[i].cliente.nombre : 'Desconocido';
-    const gasto = totalPedido(pedidos[i]);
-    
-    if (!acumulado[nombre]) {
-      acumulado[nombre] = 0;
-    }
-    acumulado[nombre] += gasto;
-  }
-  
-  const lista = [];
-  const nombres = Object.keys(acumulado);
-  for (let i = 0; i < nombres.length; i++) {
-    lista.push({
-      cliente: nombres[i],
-      total: Math.round(acumulado[nombres[i]] * 100) / 100
-    });
-  }
-  lista.sort((a, b) => {
-    if (b.total !== a.total) {
-      return b.total - a.total;
-    }
-    return a.cliente.localeCompare(b.cliente);
-  });
-  
-  return lista.slice(0, n);
 }
