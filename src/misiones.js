@@ -66,3 +66,23 @@ export function validarCliente(cliente) {
   
   return errores;
 }
+// ----------------------------------------------------------------------------
+// MISIÓN 4 · RF5 — ¿Cuántos pedidos hay en cada estado?
+// ----------------------------------------------------------------------------
+export function resumenPorEstado(pedidos) {
+  const resumen = {};
+  for (let i = 0; i < ESTADOS.length; i++) {
+    resumen[ESTADOS[i]] = 0;
+  }
+  
+  if (Array.isArray(pedidos)) {
+    for (let i = 0; i < pedidos.length; i++) {
+      const estado = pedidos[i].estado;
+      if (resumen[estado] !== undefined) {
+        resumen[estado]++;
+      }
+    }
+  }
+  
+  return resumen;
+}
