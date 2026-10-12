@@ -86,3 +86,26 @@ export function resumenPorEstado(pedidos) {
   
   return resumen;
 }
+// ----------------------------------------------------------------------------
+// MISIÓN 5 · RF5 — Buscar pedidos por nombre de cliente
+// ----------------------------------------------------------------------------
+export function buscarPedidos(pedidos, texto) {
+  if (!Array.isArray(pedidos)) return [];
+  
+  const busqueda = (texto || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
+  if (busqueda === '') return pedidos;
+  
+  const resultado = [];
+  for (let i = 0; i < pedidos.length; i++) {
+    const nombre = (pedidos[i].cliente && pedidos[i].cliente.nombre ? pedidos[i].cliente.nombre : '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
+      
+    if (nombre.includes(busqueda)) {
+      resultado.push(pedidos[i]);
+    }
+  }
+  
+  return resultado;
+}
