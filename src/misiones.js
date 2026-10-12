@@ -40,5 +40,29 @@ export function puedeTransicionar(actual, nuevo) {
   // Debe existir en el arreglo y ser exactamente el siguiente (índice + 1)
   return iActual !== -1 && iNuevo !== -1 && iNuevo === iActual + 1;
 }
-
-
+// ----------------------------------------------------------------------------
+// MISIÓN 3 · RF1 — ¿Los datos del cliente son válidos?
+// ----------------------------------------------------------------------------
+export function validarCliente(cliente) {
+  const errores = [];
+  
+  // Nombre vacío o solo espaciosgit
+  if (!cliente.nombre || cliente.nombre.trim() === '') {
+    errores.push('nombre_requerido');
+  }
+  
+  // Teléfono: quitar espacios y guiones, verificar 10 dígitos exactos
+  const tel = (cliente.telefono || '').replace(/[\s-]/g, '');
+  if (!/^\d{10}$/.test(tel)) {
+    errores.push('telefono_invalido');
+  }
+  
+  // Email: si viene, validar formato básico algo@algo.algo
+  if (cliente.email && cliente.email.trim() !== '') {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cliente.email)) {
+      errores.push('email_invalido');
+    }
+  }
+  
+  return errores;
+}
